@@ -1,2 +1,5 @@
 firefox-secdns
 ==============
+
+![Diagrama]()
+
