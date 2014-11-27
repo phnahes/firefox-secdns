@@ -6,7 +6,6 @@ import time
 import datetime
 import sys
 
-############# MODIFY THIS PART IF NECESSARY ###############
 filter_bpf = 'udp and port 53'
 
 # ------ SELECT/FILTER MSGS
@@ -29,5 +28,6 @@ def select_DNS(pkt):
 
     except:
         pass
+
 # ------ START SNIFFER 
 sniff(filter=filter_bpf, store=0,  prn=select_DNS)
