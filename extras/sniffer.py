@@ -16,15 +16,17 @@ def select_DNS(pkt):
     try:
         if DNSQR in pkt and pkt.dport == 53:
         # queries
-#           print pkt.show2()
-           print pkt.sprintf("%DNS.aa%")
-
-           # 
-        elif DNSRR in pkt and pkt.sport == 53:
-        # responses
+	   print "##### DNSQR #####"
            #print pkt.show2()
            print pkt.sprintf("%DNS.aa%")
- # 
+	   print pkt[DNSQR].sprintf('%qname%')
+
+        elif DNSRR in pkt and pkt.sport == 53:
+        # responses
+	   #print "##### DNSRR #####"
+           #print pkt.show2()
+           #print pkt.sprintf("%DNS.aa%")
+
     except:
         pass
 # ------ START SNIFFER 
