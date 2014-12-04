@@ -1,0 +1,61 @@
+#! /bin/sh
+### BEGIN INIT INFO
+# Provides:          secdns
+# Required-Start:    $syslog $remote_fs
+# Required-Stop:     $syslog $remote_fs
+# Default-Start:     2 3 4 5
+# Default-Stop:      1
+# Short-Description: Python Sniffer Service
+# Description:       Manage Python Sniffer
+### END INIT INFO
+
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+DAEMON=/opt/secdns/bin/secdns.py
+NAME=secdns
+PIDFILE=/var/run/$NAME.pid
+DESC="Python Sniffer to SecDns Firefox Plugin"
+SCRIPTNAME=/etc/init.d/secdns
+
+unset TMPDIR
+
+# Exit if the package is not installed
+test -x $DAEMON || exit 0
+
+# Read configuration variable file if it is present
+if [ -r /etc/default/secdns ]; then
+  . /etc/default/secdns
+fi
+
+# Define LSB log_* functions.
+# Depend on lsb-base (>= 3.2-14) to ensure that this file is present
+# and status_of_proc is working.
+. /lib/lsb/init-functions
+
+case "$1" in
+  start)
+	log_daemon_msg "Starting $DESC" "$NAME"
+
+	start-stop-daemon --start --make-pidfile --background --oknodo --user "root" --name $NAME --pidfile $PIDFILE --exec $DAEMON
+	status=$?
+	log_end_msg $status
+	;;
+  stop)
+	log_daemon_msg "Stopping $DESC" "$NAME"
+	start-stop-daemon --stop --quiet --retry 5 --oknodo --pidfile $PIDFILE --name $NAME
+	status=$?
+	log_end_msg $status
+	;;
+  restart)
+	stop
+	start
+	;;
+  status)
+	status_of_proc -p "$PIDFILE" "$DAEMON" "$NAME" && exit 0 || exit $?
+	;;
+  *)
+	echo "Usage: $SCRIPTNAME {start|stop|restart|status}" >&2
+	exit 3
+	;;
+esac
+
+exit 0
