@@ -5,9 +5,8 @@ from datetime import datetime
 import time
 import datetime
 import sys
-import sqlite3
 
-db = sqlite3.connect('/tmp/fuck.db')
+file = "/tmp/file.in"
 
 filter_bpf = 'udp and port 53'
 
@@ -26,9 +25,15 @@ def select_DNS(pkt):
 	   aa = pkt.sprintf("%DNS.aa%")
 	   domain = pkt[DNSQR].sprintf('%qname%')
 
-	   if aa.find("1L") != -1:
-	   	db.execute("INSERT INTO regs (name, aa) VALUES (?, ?)",(domain, aa))
-           	db.commit()
+	   if aa.find("0L") == -1:
+
+		domain = domain.replace(".'","")
+		domain = domain.replace("'","")
+#		print domain
+
+		f = open(file, 'a')
+		f.write(domain+"\n")
+		f.close()
 
            #print pkt.sprintf("%DNS.aa%")
 
