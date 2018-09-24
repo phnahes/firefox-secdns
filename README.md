@@ -1,5 +1,8 @@
 # SecDNS
 
+```POC - Sec Graduation```
+
+
 Plugin para Firefox que propoe:
 
   - Monitorar trafego de requisições DNS
